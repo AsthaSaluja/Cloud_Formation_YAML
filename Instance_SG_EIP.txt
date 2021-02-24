@@ -1,0 +1,38 @@
+Resources:
+  MyInstance01:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      ImageId: ami-08e18b2fe66cdf6ab
+      InstanceType: t2.micro
+      KeyName: TOKYO_KEYPAIR
+      SecurityGroups: 
+      - !Ref SSHSecurityGroup
+      - !Ref HTTPSecuritygroup
+
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SSH Access
+      GroupName: sg0101
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 22
+        IpProtocol: tcp
+        ToPort: 22 
+
+  HTTPSecuritygroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: HTTP Access
+      GroupName: sg0202 
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 443
+        IpProtocol: tcp
+        ToPort: 443 
+
+  MyEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref MyInstance01
